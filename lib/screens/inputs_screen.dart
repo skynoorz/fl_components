@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/widgets.dart';
+
 class InputScreen extends StatelessWidget {
    
   const InputScreen({super.key});
   
   @override
   Widget build(BuildContext context) {
+
+    final GlobalKey<FormState> myFormKey = GlobalKey<FormState>();
+
+    final Map<String, String> formValues = {
+      'first_name':'Fernando',
+      'last_name':'Herrera',
+      'email':'fernando@google.com',
+      'password':'123456',
+      'role':'Admin',
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inputs y Forms'),
@@ -13,35 +26,41 @@ class InputScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              TextFormField(
-                // autofocus: true,
-                initialValue: '',
-                textAlign: TextAlign.center,
-                textCapitalization: TextCapitalization.words,
-                onChanged: (value) {
-                  print('value: ${value}');
-                },
-                validator: (value) {
-                  if (value == '') {
-                    return 'Este campo es requerido';
+          child: Form(
+            key: myFormKey,
+            onChanged: () {
+              
+            },
+            child: Column(
+              children: [
+                const CustomInputField(labelText: "Nombre", hintText: "Nombre del usuario"),
+                const SizedBox(height: 30,),
+          
+                const CustomInputField(labelText: "Apellido", hintText: "Apellido del Usuario",),
+                const SizedBox(height: 30,),
+          
+                const CustomInputField(labelText: "Correo", hintText: "Email", keyboardType: TextInputType.emailAddress),
+                const SizedBox(height: 30,),
+          
+                const CustomInputField(labelText: "Contraseña", hintText: "Contraseña del usuario", obscuredText: true,),
+                const SizedBox(height: 30,),
+          
+                ElevatedButton(
+                  child: const SizedBox(
+                    width: double.infinity,
+                    child: Center(child: const Text("Guardar"),),
+                  ), 
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    if (!myFormKey.currentState!.validate()){
+                      print('Formulario no valido');
+                      return;
+                    }
+                    print(formValues);
                   }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
-                  hintText: 'Nombre del usuario',
-                  labelText: 'Nombre',
-                  helperText: 'Sólo caracteres validos',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10), 
-                      topLeft: Radius.circular(10))
-                  ),
                 )
-              )
-            ],
+              ],
+            ),
           ),),
       ),
     );

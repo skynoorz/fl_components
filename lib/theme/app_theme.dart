@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart'
-    show AppBarTheme, Color, Colors, ElevatedButton, ElevatedButtonThemeData, FloatingActionButtonThemeData, StadiumBorder, TextButton, TextButtonThemeData, ThemeData;
+import 'package:flutter/material.dart';
 
 class AppTheme {
   static Color primary = Colors.orange;
@@ -26,6 +25,20 @@ class AppTheme {
           shape: const StadiumBorder(),
           elevation: 10
         )
+      ),
+
+      //Input decoration
+      inputDecorationTheme: InputDecorationTheme(
+        floatingLabelStyle: TextStyle(color: primary),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: primary),
+          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), topRight: Radius.circular(10))
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: primary),
+          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), topRight: Radius.circular(10))
+        ),
+        iconColor: primary
       )
   );
 
