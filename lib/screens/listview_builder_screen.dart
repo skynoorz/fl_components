@@ -42,7 +42,13 @@ class _ListViewBuilderScreenState extends State<ListViewBuilderScreen> {
     scrollController.animateTo(scrollController.position.pixels + 120, duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn);
   }
 
-
+  Future<void> onRefresh() async{
+    await Future.delayed(const Duration(seconds: 2));
+    final lastId = imagesIds.last;
+    imagesIds.clear();
+    imagesIds.add(lastId +1 );
+    add5();
+  }
 
   void add5(){
     final lastId = imagesIds.last;
@@ -64,18 +70,22 @@ class _ListViewBuilderScreenState extends State<ListViewBuilderScreen> {
         removeBottom: true,
         child: Stack(
           children: [
-            ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              controller: scrollController,
-              itemCount: imagesIds.length,
-              itemBuilder: (BuildContext context, int index) {
-                return FadeInImage(
-                  width: double.infinity,
-                  height: 300,
-                  fit: BoxFit.cover,
-                  placeholder: const AssetImage('assets/jar-loading.gif'), 
-                  image: NetworkImage('https://picsum.photos/500/300?image=${imagesIds[index]}'));
-              },
+            RefreshIndicator(
+              color: AppTheme.primary,
+              onRefresh: () { return onRefresh(); },
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                controller: scrollController,
+                itemCount: imagesIds.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return FadeInImage(
+                    width: double.infinity,
+                    height: 300,
+                    fit: BoxFit.cover,
+                    placeholder: const AssetImage('assets/jar-loading.gif'), 
+                    image: NetworkImage('https://picsum.photos/500/300?image=${imagesIds[index]}'));
+                },
+              ),
             ),
 
             if(isLoading)
